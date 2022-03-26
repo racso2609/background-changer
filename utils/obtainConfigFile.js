@@ -49,7 +49,9 @@ const getAvaliableConfig = () => {
 
     return file;
   } catch (e) {
-    exec(`notify-send  ${e.message}`);
+    exec(`notify-send  ${e.message}`, (error, stderr) => {
+      console.log(error, stderr);
+    });
     throw e;
   }
 };

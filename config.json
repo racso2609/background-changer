@@ -1,5 +1,6 @@
 {
   "folderContainer": "wallpapers",
-  "baseString": "/home/racso/"
+  "baseString": "/home/racso/",
+  "timeStamp": "*/30 * * * * *"
   
 }
