@@ -1,3 +1,5 @@
 {
-  "folderContainer": "~/wallpapers"
+  "folderContainer": "wallpapers",
+  "baseString": "/home/racso/"
+  
 }

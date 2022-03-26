@@ -1,14 +1,32 @@
 const fs = require('fs');
+const path = require('path');
 const { exec } = require('child_process');
-const posibleLocation = ['~/.config/racPaper/config.json', './config.json'];
+const posibleLocation = ['/home/racso/.config/racPaper/config.json'];
+const defaultFile = './config.json';
 
 const validateConfigFile = (file) => {
   if (!file) {
-    throw new Error('please create a config file');
+    return 'please create a config file';
   }
-  const { folderContainer } = file;
-  if (!folderContainer)
-    throw new Error('please specify the location of your pictures');
+  const { folderContainer, baseString } = file;
+  if (!baseString) return 'provide a valid baseString';
+
+  const fileExists = fs.existsSync(path.join(baseString, folderContainer));
+
+  if (!folderContainer || !fileExists) {
+    return 'please specify the location of your pictures';
+  }
+
+  return false;
+};
+const openFile = (filePath) => {
+  let tempFile = fs.readFileSync(filePath, {
+    encoding: 'utf8',
+    flag: 'r',
+  });
+  tempFile = JSON.parse(tempFile);
+
+  return tempFile;
 };
 
 const getAvaliableConfig = () => {
@@ -17,12 +35,18 @@ const getAvaliableConfig = () => {
     for (const filePath of posibleLocation) {
       const fileExists = fs.existsSync(filePath);
       if (fileExists) {
-        file = fs.readFileSync(filePath, { encoding: 'utf8', flag: 'r' });
-        file = JSON.parse(file);
-        break;
+        let tempFile = openFile(filePath);
+        if (!validateConfigFile(tempFile)) {
+          file = tempFile;
+          break;
+        }
       }
     }
-    validateConfigFile(file);
+    if (!file) file = openFile(defaultFile);
+
+    const hasError = validateConfigFile(file);
+    if (hasError) throw new Error(hasError);
+
     return file;
   } catch (e) {
     exec(`notify-send  ${e.message}`);

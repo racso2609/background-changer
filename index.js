@@ -1,6 +1,8 @@
 const { exec } = require('child_process');
 const { configFile } = require('./utils/obtainConfigFile');
-const folderName = configFile.folderContainer;
+const path = require('path');
+const { baseString, folderContainer } = configFile;
+const folderName = path.join(baseString, folderContainer);
 
 exec(`feh -z --bg-center ${folderName}/*`, (error, stderr) => {
   if (error) {
