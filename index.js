@@ -4,7 +4,7 @@ const path = require('path');
 const { baseString, folderContainer } = configFile;
 const folderName = path.join(baseString, folderContainer);
 
-exec(`feh -z --bg-center ${folderName}/*`, (error, stderr) => {
+exec(`feh -z --bg-scale ${folderName}/*`, (error, stderr) => {
   if (error) {
     console.log(`error: ${error.message}`);
     exec(`notify-send ${error.message}`);
