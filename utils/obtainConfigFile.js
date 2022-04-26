@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 const posibleLocation = ['/home/racso/.config/racPaper/config.json'];
-const defaultFile = './config.json';
+const defaultFile = path.join(__dirname, '../', 'config.json');
 
-const validateConfigFile = (file) => {
+const validateConfigFile = file => {
   if (!file) {
     return 'please create a config file';
   }
@@ -19,7 +19,7 @@ const validateConfigFile = (file) => {
 
   return false;
 };
-const openFile = (filePath) => {
+const openFile = filePath => {
   let tempFile = fs.readFileSync(filePath, {
     encoding: 'utf8',
     flag: 'r',
